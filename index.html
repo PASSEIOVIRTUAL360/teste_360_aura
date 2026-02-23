@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thiago Leite | Mentor 360º - Tour Virtual Imersivo</title>
     
-    <!-- Biblioteca Pannellum -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
     <style>
-        /* Reset e Configurações de Tela */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body, html { width: 100%; height: 100%; overflow: hidden; background-color: #0c0c0c; }
         #panorama { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
@@ -18,7 +16,7 @@
         /* --- TELA DE INTRODUÇÃO PREMIUM --- */
         #intro-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); /* Efeito vidro premium */
+            background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); 
             color: #fff; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             z-index: 10; transition: opacity 0.8s ease-in-out, visibility 0.8s;
@@ -27,14 +25,14 @@
         #intro-screen h1 {
             font-size: 3.5rem; margin-bottom: 15px; letter-spacing: 3px;
             text-transform: uppercase;
-            background: linear-gradient(90deg, #d4af37, #f3e5ab); /* Dourado Mestre */
+            background: linear-gradient(90deg, #d4af37, #f3e5ab); 
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         #intro-screen p { font-size: 1.2rem; max-width: 500px; margin-bottom: 40px; color: #cccccc; line-height: 1.6; }
 
         .btn-iniciar {
-            background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); /* Azul Tecnológico */
+            background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); 
             border: none; padding: 18px 50px; font-size: 1.3rem; font-weight: bold;
             color: white; border-radius: 50px; cursor: pointer;
             box-shadow: 0 10px 30px rgba(0, 82, 212, 0.4); transition: all 0.3s ease;
@@ -42,10 +40,12 @@
         }
         .btn-iniciar:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 40px rgba(0, 82, 212, 0.6); }
 
-        /* --- O HOTSPOT ANIMADO E PROFISSIONAL --- */
+        /* --- O HOTSPOT ANIMADO E CORRIGIDO --- */
         .hotspot-pulsante {
             width: 32px;
             height: 32px;
+            margin-left: -16px; /* Ajuste cirúrgico pro centro exato */
+            margin-top: -16px;  /* Ajuste cirúrgico pro centro exato */
             background-color: rgba(255, 255, 255, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.9);
             border-radius: 50%;
@@ -54,19 +54,17 @@
             position: relative;
         }
 
-        /* O círculo interno (o "miolo" do botão) */
         .hotspot-pulsante::after {
             content: ''; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             width: 12px; height: 12px; background-color: #fff; border-radius: 50%;
         }
 
-        /* A animação de onda (sonar) */
         .hotspot-pulsante::before {
             content: ''; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%); width: 100%; height: 100%;
             border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.8);
-            animation: sonar 2s infinite ease-out; /* A mágica acontece aqui */
+            animation: sonar 2s infinite ease-out;
         }
 
         @keyframes sonar {
@@ -74,78 +72,75 @@
             100% { width: 80px; height: 80px; opacity: 0; border-width: 0px; }
         }
 
-        /* Oculta as dicas de texto padrão feias do Pannellum para manter a estética limpa */
+        /* Oculta as dicas feias do Pannellum */
         .pnlm-tooltip span { display: none !important; }
     </style>
 </head>
 <body>
-
-    <!-- A Sentinela configurou a entrada do Mestre -->
     <div id="intro-screen">
         <h1>Tour Virtual 360º</h1>
         <p>Arraste a tela para explorar o ambiente e clique nos círculos pulsantes para se mover entre os espaços.</p>
         <button class="btn-iniciar" onclick="iniciarTour()">INICIAR EXPLORAÇÃO</button>
     </div>
 
-    <!-- Container do WebGL -->
     <div id="panorama"></div>
 
     <script>
         let viewer;
 
         function iniciarTour() {
-            // Suaviza a saída da tela de introdução
             const intro = document.getElementById('intro-screen');
             intro.style.opacity = '0';
             setTimeout(() => { intro.style.visibility = 'hidden'; }, 800);
 
-            // Instancia o visualizador (Logica da Sentinela Ativada)
             viewer = pannellum.viewer('panorama', {
                 "default": {
                     "firstScene": "salaClara",
-                    "sceneFadeDuration": 1500, // Transição suave "Matterport style"
+                    "sceneFadeDuration": 1500,
                     "autoLoad": true,
-                    "autoRotate": -1.5, // Gira bem devagar para ser chique
+                    "autoRotate": 0, /* Desligado para não perder o foco na porta */
                     "compass": false,
-                    "showZoomCtrl": false, // Limpa a tela de botões desnecessários
-                    "showFullscreenCtrl": true // Deixa só o tela cheia
+                    "showZoomCtrl": false,
+                    "showFullscreenCtrl": true
                 },
 
                 "scenes": {
-                    // --- AMBIENTE 1: SALA CLARA ---
                     "salaClara": {
                         "type": "equirectangular",
-                        "panorama": "input_file_0.jpg", /* Usando .jpg conforme reduzido */
-                        "pitch": 0,
-                        "yaw": 0,
+                        "panorama": "input_file_0.jpg",
+                        /* Nascendo olhando cravado pra porta */
+                        "pitch": -1.77,
+                        "yaw": -157.75,
                         "hotSpots": [
                             {
-                                "pitch": -1.77,  /* <- A sua coordenada EXATA, Chefinho! */
-                                "yaw": -157.75,  /* <- A sua coordenada EXATA! */
+                                "pitch": -1.77,
+                                "yaw": -157.75,
                                 "type": "scene",
                                 "sceneId": "salaEscura",
                                 "cssClass": "hotspot-pulsante",
-                                "targetPitch": -5, /* Ao entrar na sala escura, olha pra baixo */
-                                "targetYaw": 0     /* Ao entrar na sala escura, olha pra porta central */
+                                /* Ao ir pra sala escura, já entra olhando pra porta dela */
+                                "targetPitch": -2,
+                                "targetYaw": 0
                             }
                         ]
                     },
 
-                    // --- AMBIENTE 2: SALA ESCURA ---
                     "salaEscura": {
                         "type": "equirectangular",
-                        "panorama": "input_file_1.jpg", /* Usando .jpg conforme reduzido */
-                        "pitch": 0,
+                        "panorama": "input_file_1.jpg",
+                        /* Na sala escura, a porta está no centro (Yaw 0) */
+                        "pitch": -2,
                         "yaw": 0,
                         "hotSpots": [
                             {
-                                "pitch": -2,    /* (Ajuste provisório, use a ferramenta depois se precisar centralizar) */
-                                "yaw": -175,    /* (Ajuste provisório, mirando perto da porta de retorno) */
+                                "pitch": -2,
+                                "yaw": 0,
                                 "type": "scene",
                                 "sceneId": "salaClara",
                                 "cssClass": "hotspot-pulsante",
-                                "targetPitch": -1.77, /* Ao voltar, olha pra porta exata da Sala Clara */
-                                "targetYaw": 202      /* (Inverteu o -157.75 pra olhar pra porta) */
+                                /* Quando voltar, olha pra porta da sala clara de novo */
+                                "targetPitch": -1.77,
+                                "targetYaw": -157.75
                             }
                         ]
                     }
