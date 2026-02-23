@@ -3,134 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiago Leite | Mentor 360º</title>
+    <title>Thiago Leite | Mentor 360º - Tour Virtual Imersivo</title>
     
+    <!-- Biblioteca Pannellum -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+        /* Reset e Configurações de Tela */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #0c0c0c; }
         #panorama { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
 
-        /* Tela de Introdução Premium */
+        /* --- TELA DE INTRODUÇÃO PREMIUM --- */
         #intro-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 15, 20, 0.9); backdrop-filter: blur(10px);
+            background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); /* Efeito vidro premium */
             color: #fff; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
-            z-index: 10; transition: opacity 1s ease-in-out, visibility 1s;
+            z-index: 10; transition: opacity 0.8s ease-in-out, visibility 0.8s;
         }
-        #intro-screen h1 { font-size: 3rem; margin-bottom: 10px; color: #d4af37; }
-        #intro-screen p { font-size: 1.2rem; max-width: 600px; margin-bottom: 30px; color: #e0e0e0; }
-        
-        .btn-iniciar {
-            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
-            border: none; padding: 15px 40px; font-size: 1.2rem; font-weight: bold;
-            color: white; border-radius: 30px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s;
-        }
-        .btn-iniciar:hover { transform: scale(1.05); }
 
-        /* 🔴 MÁGICA DA SENTINELA: O Hotspot Pulsante 🔴 */
+        #intro-screen h1 {
+            font-size: 3.5rem; margin-bottom: 15px; letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #d4af37, #f3e5ab); /* Dourado Mestre */
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        #intro-screen p { font-size: 1.2rem; max-width: 500px; margin-bottom: 40px; color: #cccccc; line-height: 1.6; }
+
+        .btn-iniciar {
+            background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); /* Azul Tecnológico */
+            border: none; padding: 18px 50px; font-size: 1.3rem; font-weight: bold;
+            color: white; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 82, 212, 0.4); transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-iniciar:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 40px rgba(0, 82, 212, 0.6); }
+
+        /* --- O HOTSPOT ANIMADO E PROFISSIONAL --- */
         .hotspot-pulsante {
-            width: 35px;
-            height: 35px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border: 3px solid #fff;
+            width: 32px;
+            height: 32px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.9);
             border-radius: 50%;
             cursor: pointer;
-            animation: pulsar 1.5s infinite; /* A animação de respiração contínua */
-            pointer-events: auto; /* Garante que o clique funcione */
+            pointer-events: auto;
+            position: relative;
         }
 
-        /* Os passos da animação de pulsar */
-        @keyframes pulsar {
-            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-            70% { transform: scale(1.2); box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
-            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        /* O círculo interno (o "miolo" do botão) */
+        .hotspot-pulsante::after {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px; height: 12px; background-color: #fff; border-radius: 50%;
         }
 
-        /* Ferramenta para te ajudar a achar a posição exata (apagar depois) */
-        #coordenadas {
-            position: absolute; bottom: 20px; right: 20px; z-index: 100;
-            background: rgba(0,0,0,0.7); color: #00ff00; padding: 10px;
-            border-radius: 5px; font-family: monospace; font-size: 14px;
-            pointer-events: none;
+        /* A animação de onda (sonar) */
+        .hotspot-pulsante::before {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 100%; height: 100%;
+            border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.8);
+            animation: sonar 2s infinite ease-out; /* A mágica acontece aqui */
         }
+
+        @keyframes sonar {
+            0% { width: 32px; height: 32px; opacity: 1; border-width: 2px; }
+            100% { width: 80px; height: 80px; opacity: 0; border-width: 0px; }
+        }
+
+        /* Oculta as dicas de texto padrão feias do Pannellum para manter a estética limpa */
+        .pnlm-tooltip span { display: none !important; }
     </style>
 </head>
 <body>
 
+    <!-- A Sentinela configurou a entrada do Mestre -->
     <div id="intro-screen">
-        <h1>BEM-VINDO AO FUTURO</h1>
-        <p>Arraste a tela para olhar ao redor e clique nas esferas pulsantes para navegar.</p>
-        <button class="btn-iniciar" onclick="iniciarTour()">INICIAR EXPERIÊNCIA 360º</button>
+        <h1>Tour Virtual 360º</h1>
+        <p>Arraste a tela para explorar o ambiente e clique nos círculos pulsantes para se mover entre os espaços.</p>
+        <button class="btn-iniciar" onclick="iniciarTour()">INICIAR EXPLORAÇÃO</button>
     </div>
 
+    <!-- Container do WebGL -->
     <div id="panorama"></div>
-    
-    <!-- Caixinha que vai mostrar as coordenadas pra você -->
-    <div id="coordenadas">Clique em qualquer lugar para ver a posição!</div>
 
     <script>
         let viewer;
 
         function iniciarTour() {
+            // Suaviza a saída da tela de introdução
             const intro = document.getElementById('intro-screen');
             intro.style.opacity = '0';
-            setTimeout(() => { intro.style.visibility = 'hidden'; }, 1000);
+            setTimeout(() => { intro.style.visibility = 'hidden'; }, 800);
 
+            // Instancia o visualizador (Logica da Sentinela Ativada)
             viewer = pannellum.viewer('panorama', {
                 "default": {
                     "firstScene": "salaClara",
-                    "sceneFadeDuration": 1500, 
+                    "sceneFadeDuration": 1500, // Transição suave "Matterport style"
                     "autoLoad": true,
-                    "autoRotate": -2 
+                    "autoRotate": -1.5, // Gira bem devagar para ser chique
+                    "compass": false,
+                    "showZoomCtrl": false, // Limpa a tela de botões desnecessários
+                    "showFullscreenCtrl": true // Deixa só o tela cheia
                 },
 
                 "scenes": {
+                    // --- AMBIENTE 1: SALA CLARA ---
                     "salaClara": {
                         "type": "equirectangular",
-                        "panorama": "input_file_0.jpg", /* <- LEMBRE DE CONFIRMAR SE ESTÁ .jpg OU .jpeg AQUI */
+                        "panorama": "input_file_0.jpg", /* Usando .jpg conforme reduzido */
                         "pitch": 0,
                         "yaw": 0,
                         "hotSpots": [
                             {
-                                "pitch": -5, /* Mude isso para subir ou descer o ícone */
-                                "yaw": 10,   /* Mude isso para levar o ícone pra esquerda ou direita */
+                                "pitch": -1.77,  /* <- A sua coordenada EXATA, Chefinho! */
+                                "yaw": -157.75,  /* <- A sua coordenada EXATA! */
                                 "type": "scene",
-                                "text": "Ir para a Sala Escura",
                                 "sceneId": "salaEscura",
-                                "cssClass": "hotspot-pulsante" /* Aqui eu chamo a animação que criei! */
+                                "cssClass": "hotspot-pulsante",
+                                "targetPitch": -5, /* Ao entrar na sala escura, olha pra baixo */
+                                "targetYaw": 0     /* Ao entrar na sala escura, olha pra porta central */
                             }
                         ]
                     },
 
+                    // --- AMBIENTE 2: SALA ESCURA ---
                     "salaEscura": {
                         "type": "equirectangular",
-                        "panorama": "input_file_1.jpg", /* <- LEMBRE DE CONFIRMAR SE ESTÁ .jpg OU .jpeg AQUI */
+                        "panorama": "input_file_1.jpg", /* Usando .jpg conforme reduzido */
                         "pitch": 0,
                         "yaw": 0,
                         "hotSpots": [
                             {
-                                "pitch": -5, 
-                                "yaw": 0,    
+                                "pitch": -2,    /* (Ajuste provisório, use a ferramenta depois se precisar centralizar) */
+                                "yaw": -175,    /* (Ajuste provisório, mirando perto da porta de retorno) */
                                 "type": "scene",
-                                "text": "Voltar para a Sala Clara",
                                 "sceneId": "salaClara",
-                                "cssClass": "hotspot-pulsante" 
+                                "cssClass": "hotspot-pulsante",
+                                "targetPitch": -1.77, /* Ao voltar, olha pra porta exata da Sala Clara */
+                                "targetYaw": 202      /* (Inverteu o -157.75 pra olhar pra porta) */
                             }
                         ]
                     }
                 }
-            });
-
-            /* O TRUQUE DO MESTRE: Mostrar coordenadas ao clicar */
-            viewer.on('mousedown', function(event) {
-                let pitch = viewer.getPitch().toFixed(2);
-                let yaw = viewer.getYaw().toFixed(2);
-                document.getElementById('coordenadas').innerHTML = `Pitch: ${pitch} | Yaw: ${yaw}`;
             });
         }
     </script>
